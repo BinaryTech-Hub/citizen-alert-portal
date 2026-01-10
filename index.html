@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>नागरिक सूचना पोर्टल | Citizen Alert Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<style>
+/* Shared container for consistent width and centering */
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  width:100%;
+}
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+:root{
+  --gov-blue:#0b2d5c;
+  --gov-blue-light:#143f7a;
+  --gov-accent:#ff9933;
+  --bg-light:#f4f7fb;
+  --card-bg:#ffffff;
+}
+body{margin:0;background:#f4f7fb}
+header{
+  background:linear-gradient(90deg,var(--gov-blue),var(--gov-blue-light));
+  border-bottom:4px solid var(--gov-accent);
+  color:#fff;
+  padding:16px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+nav button{
+  margin-left:10px;
+  padding:8px 16px;
+  border:none;
+  cursor:pointer;
+  background:rgba(255,255,255,0.15);
+  color:#fff;
+  border-radius:20px;
+  transition:all .3s ease;
+}
+nav button:hover{
+  background:rgba(255,255,255,0.3);
+  transform:translateY(-1px);
+}
+.lang-btn{
+  background:#ffffff !important;
+  color:var(--gov-blue) !important;
+  font-weight:bold;
+  border-radius:20px;
+}
+.lang-btn:hover{
+  background:#f1f1f1 !important;
+}
+.logo h2{margin:0}
+.logo span{font-size:13px;opacity:.8}
+.section{
+  display:none;
+  padding:40px;
+  text-align:center;
+  min-height: calc(100vh - 80px);
+  animation: fadeIn 0.4s ease;
+  background:var(--bg-light);
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+.section.active{display:block}
+.primary{
+  padding:12px 28px;
+  background:linear-gradient(90deg,var(--gov-accent),#ff7a00);
+  color:#fff;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  margin-top:10px;
+  font-weight:bold;
+  transition:all .3s ease;
+}
+.primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 14px rgba(0,0,0,.2);
+}
+form{max-width:500px;margin:auto;text-align:left}
+label{margin-top:10px;display:block;font-weight:bold}
+input,textarea,select{width:100%;padding:10px;margin-top:5px;border-radius:4px;border:1px solid #ccc}
+footer{background:#0b2d5c;color:#fff;text-align:center;padding:10px;margin-top:40px}
+#trackResult{margin-top:20px;font-weight:bold}
+.card{
+  background:var(--card-bg);
+  padding:18px 22px;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.12);
+  font-weight:bold;
+  min-width:150px;
+  text-align:center;
+}
+img{cursor:pointer}
+
+/* Added government-style CSS for home page */
+.home-hero{
+  background:linear-gradient(135deg,var(--gov-blue),var(--gov-blue-light));
+  color:#fff;
+  min-height:calc(100vh - 80px);
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding-top:60px;
+}
+
+.hero-content{
+  max-width: 800px;
+  text-align: center;
+  padding: 20px;
+}
+
+.hero-content h1{
+  font-size: 42px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.tagline{
+  font-size: 16px;
+  opacity: 0.9;
+  margin-bottom: 30px;
+}
+
+.hero-actions{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.secondary{
+  padding: 12px 25px;
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.secondary:hover{
+  background: rgba(255,255,255,0.1);
+}
+
+.gov-note{
+  font-size: 14px;
+  opacity: 0.85;
+  max-width: 600px;
+  margin: auto;
+  line-height: 1.6;
+}
+form{
+  background:var(--card-bg);
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 6px 18px rgba(0,0,0,.12);
+}
+input,textarea,select{
+  transition:border .2s ease, box-shadow .2s ease;
+}
+input:focus,textarea:focus,select:focus{
+  outline:none;
+  border:1px solid var(--gov-blue);
+  box-shadow:0 0 0 2px rgba(11,45,92,.15);
+}
+</style>
+<!-- Add styles for new home sections -->
+<style>
+.notice-board, .rules-box, .quick-report{
+  background:rgba(255,255,255,0.15);
+  border-radius:14px;
+  padding:20px;
+  margin-top:25px;
+  text-align:left;
+}
+.notice-board h3, .rules-box h3, .quick-report h3{
+  margin-top:0;
+  color:#fff;
+}
+.notice-board ul, .rules-box ol{
+  padding-left:20px;
+  font-size:14px;
+  line-height:1.6;
+}
+.quick-report form{
+  display:grid;
+  gap:10px;
+}
+.quick-report input, .quick-report select{
+  padding:10px;
+  border-radius:6px;
+  border:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <h2 data-i18n="home_title">नागरिक सूचना पोर्टल</h2>
+    <span>Citizen Alert & Incident Portal</span>
+  </div>
+  <nav>
+    <button onclick="showSection('home')" data-i18n="nav_home">Home</button>
+    <button onclick="showSection('report')" data-i18n="nav_report">रिपोर्ट करें</button>
+    <button onclick="showSection('track')" data-i18n="nav_track">स्टेटस चेक</button>
+    <button onclick="showSection('admin')" data-i18n="nav_authority">Authority Login</button>
+    <button onclick="toggleLang()" class="lang-btn" data-i18n="nav_lang">EN / हिंदी</button>
+  </nav>
+</header>
+
+<section id="home" class="section active home-hero">
+  <div class="hero-content container">
+    <h1 data-i18n="home_title">नागरिक सूचना पोर्टल</h1>
+    <p class="tagline" data-i18n="home_tagline">
+      Government of India Initiative for Public Safety & Civic Responsibility
+    </p>
+
+    <div class="hero-actions">
+      <button class="primary" onclick="showSection('report')" data-i18n="btn_report">📢 Report an Issue</button>
+      <button class="secondary" onclick="showSection('track')" data-i18n="btn_track">📍 Track Complaint</button>
+    </div>
+
+    <div class="gov-note">
+      An official citizen engagement platform to report public issues,
+      ensure transparency, and improve governance.
+    </div>
+
+    <!-- Government Notice Board -->
+    <div class="notice-board">
+      <h3 data-i18n="notice_title">📢 Public Notices</h3>
+      <ul>
+        <li data-i18n="notice_1">Do not submit fake or misleading complaints.</li>
+        <li data-i18n="notice_2">Emergency complaints will be prioritized.</li>
+        <li data-i18n="notice_3">False reporting may lead to legal action.</li>
+      </ul>
+    </div>
+
+    <!-- Rules & Regulations Section -->
+    <div class="rules-box">
+      <h3 data-i18n="rules_title">📜 Rules & Regulations</h3>
+      <ol>
+        <li data-i18n="rule_1">Provide correct information while submitting complaints.</li>
+        <li data-i18n="rule_2">Attach valid photo evidence if available.</li>
+        <li data-i18n="rule_3">Use this portal only for public interest issues.</li>
+        <li data-i18n="rule_4">Complaints are monitored by authorized departments.</li>
+      </ol>
+    </div>
+
+    <!-- Quick Report Complaint Form -->
+    <div class="quick-report">
+      <h3 data-i18n="quick_title">⚡ Quick Complaint Report</h3>
+      <form onsubmit="showSection('report');return false;">
+        <input type="text" placeholder="Enter issue location" required>
+        <select required>
+          <option value="" data-i18n="issue_select">Select Issue Type</option>
+          <option data-i18n="issue_road">Road</option>
+          <option data-i18n="issue_water">Water</option>
+          <option data-i18n="issue_electricity">Electricity</option>
+          <option data-i18n="issue_crime">Crime</option>
+        </select>
+        <button class="primary" type="submit" data-i18n="quick_btn">Continue to Full Form</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="report" class="section">
+  <div class="container">
+  <h2 data-i18n="report_title">घटना रिपोर्ट करें</h2>
+  <form id="reportForm">
+    <label data-i18n="label_type">घटना का प्रकार</label>
+    <select required>
+      <option value="">चुनें</option>
+      <option>Road Accident</option>
+      <option>Electricity</option>
+      <option>Water Problem</option>
+      <option>Crime</option>
+      <option>Fire</option>
+    </select>
+
+    <label data-i18n="label_desc">घटना का विवरण</label>
+    <textarea required></textarea>
+
+    <label data-i18n="label_photo">फोटो अपलोड करें</label>
+    <input type="file" accept="image/*">
+
+    <label data-i18n="label_location">स्थान</label>
+    <input type="text" placeholder="पूरा पता" data-i18n-placeholder="placeholder_address" required>
+    <input type="hidden" id="lat">
+    <input type="hidden" id="lng">
+
+    <label data-i18n="label_name">आपका नाम</label>
+    <input type="text" required>
+
+    <label data-i18n="label_mobile">मोबाइल नंबर</label>
+    <input type="tel" pattern="[0-9]{10}" required>
+
+    <button class="primary" type="submit" data-i18n="btn_submit">रिपोर्ट सबमिट करें</button>
+  </form>
+  <p id="successMsg"></p>
+  </div>
+</section>
+
+<section id="track" class="section">
+  <div class="container">
+  <h2 data-i18n="track_title">अपनी रिपोर्ट ट्रैक करें</h2>
+  <input type="text" id="trackId" placeholder="CAP-XXXXX" data-i18n-placeholder="placeholder_track">
+  <br><br>
+  <button class="primary" onclick="trackReport()" data-i18n="btn_search">खोजें</button>
+  <div id="trackResult"></div>
+  </div>
+</section>
+
+<section id="admin" class="section">
+  <div class="container">
+  <h2 data-i18n="authority_title">🛠️ Authority Login Panel</h2>
+
+  <div id="adminLogin">
+    <select id="adminDept">
+      <option value="">Select Department</option>
+      <option value="Police">Police</option>
+      <option value="PWD">PWD</option>
+      <option value="Electricity">Electricity</option>
+      <option value="Water">Water</option>
+      <option value="Municipal">Municipal</option>
+    </select>
+    <br><br>
+    <input type="email" id="adminEmail" placeholder="Enter Authority Email" required>
+    <br><br>
+    <input type="password" id="adminPass" placeholder="Enter Authority Password">
+    <br><br>
+    <button class="primary" onclick="adminLogin()" data-i18n="btn_login">Login</button>
+    <p id="adminError" style="color:red"></p>
+  </div>
+
+  <div id="adminDashboard" style="display:none">
+    
+    <div id="analytics" style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px">
+      <div class="card" id="totalCount">Total: 0</div>
+      <div class="card" id="submittedCount">Submitted: 0</div>
+      <div class="card" id="progressCount">In Progress: 0</div>
+      <div class="card" id="resolvedCount">Resolved: 0</div>
+      <div class="card" id="emergencyCount">Emergency: 0</div>
+    </div>
+    <div id="complaintList"></div>
+    <div style="text-align:center;margin-top:30px">
+      <button class="primary" onclick="adminLogout()" data-i18n="btn_logout">Logout</button>
+    </div>
+  </div>
+  </div>
+</section>
+
+<footer>
+  <p data-i18n="footer_text">© 2026 Citizen Alert Portal | Digital India</p>
+</footer>
+
+<script>
+const firebaseConfig = {
+  apiKey: "demo",
+  authDomain: "demo.firebaseapp.com",
+  databaseURL: "https://demo.firebaseio.com",
+  projectId: "demo",
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  const target = document.getElementById(id);
+  target.classList.add('active');
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+navigator.geolocation.getCurrentPosition(pos=>{
+  document.getElementById("lat").value = pos.coords.latitude;
+  document.getElementById("lng").value = pos.coords.longitude;
+});
+
+document.getElementById("reportForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  const fileInput = this.querySelector('input[type="file"]');
+  let imageData = "";
+  if(fileInput.files.length > 0){
+    const reader = new FileReader();
+    reader.onload = () => {
+      imageData = reader.result;
+      saveReport(imageData);
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+    return;
+  }
+  saveReport("");
+});
+
+function saveReport(imageData){
+  let ref="CAP-"+Math.random().toString(36).substr(2,5).toUpperCase();
+  let report={
+    ref,
+    status:"Submitted",
+    department:"Municipal",
+    priority:"Normal",
+    image:imageData,
+    time:new Date().toLocaleString(),
+    lat: document.getElementById("lat").value,
+    lng: document.getElementById("lng").value,
+  };
+  localStorage.setItem(ref,JSON.stringify(report));
+  db.ref("complaints/"+ref).set(report);
+  document.getElementById("successMsg").innerHTML="✅ रिपोर्ट सफल! Reference ID: <b>"+ref+"</b>";
+  document.getElementById("reportForm").reset();
+}
+
+function trackReport(){
+  let id=document.getElementById("trackId").value;
+  let data=localStorage.getItem(id);
+  if(!data){
+    document.getElementById("trackResult").innerHTML="❌ रिपोर्ट नहीं मिली";
+    return;
+  }
+  let report=JSON.parse(data);
+  document.getElementById("trackResult").innerHTML=
+    "📌 Status: "+report.status+"<br>🕒 Time: "+report.time;
+}
+
+const ADMIN_PASSWORD = "admin123";
+let loggedDept = "";
+
+function adminLogin(){
+  const pass = document.getElementById("adminPass").value;
+  const dept = document.getElementById("adminDept").value;
+  const email = document.getElementById("adminEmail").value;
+
+  if(!dept){
+    document.getElementById("adminError").innerText="Select department";
+    return;
+  }
+
+  if(!email){
+    document.getElementById("adminError").innerText="Enter authority email";
+    return;
+  }
+
+  if(pass !== ADMIN_PASSWORD){
+    document.getElementById("adminError").innerText="Invalid password";
+    return;
+  }
+
+  loggedDept = dept;
+  document.getElementById("adminLogin").style.display="none";
+  document.getElementById("adminDashboard").style.display="block";
+  loadComplaints();
+}
+
+function loadComplaints(){
+  let total=0, submitted=0, progress=0, resolved=0, emergency=0;
+
+  const container = document.getElementById("complaintList");
+  container.innerHTML = "";
+
+  if(localStorage.length === 0){
+    container.innerHTML = "<p>No complaints found</p>";
+    return;
+  }
+
+  for(let i=0;i<localStorage.length;i++){
+    const key = localStorage.key(i);
+    if(!key.startsWith("CAP-")) continue;
+
+    const data = JSON.parse(localStorage.getItem(key));
+    if(loggedDept !== "Municipal" && data.department !== loggedDept) continue;
+
+    total++;
+    if(data.status==="Submitted") submitted++;
+    if(data.status==="In Progress") progress++;
+    if(data.status==="Resolved") resolved++;
+    if(data.priority==="Emergency") emergency++;
+
+    const div = document.createElement("div");
+    div.style.border = "1px solid #ccc";
+    div.style.padding = "10px";
+    div.style.margin = "10px 0";
+
+    if(data.priority==="High") div.style.borderLeft="6px solid orange";
+    if(data.priority==="Emergency") div.style.borderLeft="6px solid red";
+    if(data.priority==="Normal") div.style.borderLeft="6px solid green";
+
+    div.innerHTML = `
+      ${data.image ? `<img src="${data.image}" style="max-width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:8px">` : ""}
+      ${data.lat ? `<a target="_blank" href="https://www.google.com/maps?q=${data.lat},${data.lng}">📍 View Location</a><br><br>` : ""}
+      <b>Reference:</b> ${data.ref}<br>
+
+      <b>Department:</b>
+      <select onchange="updateDepartment('${data.ref}', this.value)">
+        <option ${data.department==="Police"?"selected":""}>Police</option>
+        <option ${data.department==="PWD"?"selected":""}>PWD</option>
+        <option ${data.department==="Electricity"?"selected":""}>Electricity</option>
+        <option ${data.department==="Water"?"selected":""}>Water</option>
+        <option ${data.department==="Municipal"?"selected":""}>Municipal</option>
+      </select>
+      <br><br>
+
+      <b>Priority:</b>
+      <select onchange="updatePriority('${data.ref}', this.value)">
+        <option ${data.priority==="Normal"?"selected":""}>Normal</option>
+        <option ${data.priority==="High"?"selected":""}>High</option>
+        <option ${data.priority==="Emergency"?"selected":""}>Emergency</option>
+      </select>
+      <br><br>
+
+      <b>Status:</b>
+      <select onchange="updateStatus('${data.ref}', this.value)">
+        <option ${data.status==="Submitted"?"selected":""}>Submitted</option>
+        <option ${data.status==="In Progress"?"selected":""}>In Progress</option>
+        <option ${data.status==="Resolved"?"selected":""}>Resolved</option>
+      </select>
+      <br>
+      <small>${data.time}</small>
+    `;
+
+    container.appendChild(div);
+  }
+  document.getElementById("totalCount").innerText = "Total: " + total;
+  document.getElementById("submittedCount").innerText = "Submitted: " + submitted;
+  document.getElementById("progressCount").innerText = "In Progress: " + progress;
+  document.getElementById("resolvedCount").innerText = "Resolved: " + resolved;
+  document.getElementById("emergencyCount").innerText = "Emergency: " + emergency;
+}
+
+function updateStatus(ref, newStatus){
+  const report = JSON.parse(localStorage.getItem(ref));
+  report.status = newStatus;
+  localStorage.setItem(ref, JSON.stringify(report));
+  alert("Status updated");
+}
+
+function updateDepartment(ref, department){
+  const report = JSON.parse(localStorage.getItem(ref));
+  report.department = department;
+  localStorage.setItem(ref, JSON.stringify(report));
+  alert("Department assigned to " + department);
+}
+
+/* =========================
+   LANGUAGE TRANSLATION FIX
+   ========================= */
+
+const translations = {
+  hi: {
+    nav_home: "होम",
+    nav_report: "रिपोर्ट करें",
+    nav_track: "स्टेटस चेक",
+    nav_authority: "अधिकारी लॉगिन",
+    nav_lang: "EN / हिंदी",
+
+    home_title: "नागरिक सूचना पोर्टल",
+    home_tagline: "जन सुरक्षा और नागरिक जिम्मेदारी हेतु भारत सरकार की पहल",
+
+    btn_report: "📢 समस्या रिपोर्ट करें",
+    btn_track: "📍 शिकायत ट्रैक करें",
+
+    report_title: "घटना रिपोर्ट करें",
+    track_title: "अपनी रिपोर्ट ट्रैक करें",
+    authority_title: "🛠️ अधिकारी लॉगिन पैनल",
+
+    label_type: "घटना का प्रकार",
+    label_desc: "घटना का विवरण",
+    label_photo: "फोटो अपलोड करें",
+    label_location: "स्थान",
+    label_name: "आपका नाम",
+    label_mobile: "मोबाइल नंबर",
+
+    btn_submit: "रिपोर्ट सबमिट करें",
+    btn_search: "खोजें",
+    btn_login: "लॉगिन",
+    btn_logout: "लॉगआउट",
+
+    footer_text: "© 2026 भारत सरकार · नागरिक सूचना पोर्टल",
+
+    placeholder_address: "पूरा पता",
+    placeholder_track: "रेफरेंस आईडी दर्ज करें",
+
+    // Added translations for notice, rules, quick, and issue types
+    notice_title: "📢 सार्वजनिक सूचनाएँ",
+    notice_1: "कृपया फर्जी या भ्रामक शिकायत दर्ज न करें।",
+    notice_2: "आपातकालीन शिकायतों को प्राथमिकता दी जाएगी।",
+    notice_3: "गलत रिपोर्टिंग पर कानूनी कार्रवाई हो सकती है।",
+
+    rules_title: "📜 नियम एवं शर्तें",
+    rule_1: "शिकायत दर्ज करते समय सही जानकारी दें।",
+    rule_2: "यदि संभव हो तो प्रमाणिक फोटो संलग्न करें।",
+    rule_3: "इस पोर्टल का उपयोग केवल सार्वजनिक हित के लिए करें।",
+    rule_4: "शिकायतों की निगरानी अधिकृत विभागों द्वारा की जाती है।",
+
+    quick_title: "⚡ त्वरित शिकायत दर्ज करें",
+    quick_btn: "पूर्ण फॉर्म पर जाएँ",
+
+    issue_select: "समस्या का प्रकार चुनें",
+    issue_road: "सड़क",
+    issue_water: "पानी",
+    issue_electricity: "बिजली",
+    issue_crime: "अपराध"
+  },
+
+  en: {
+    nav_home: "Home",
+    nav_report: "Report",
+    nav_track: "Track Status",
+    nav_authority: "Authority Login",
+    nav_lang: "EN / हिंदी",
+
+    home_title: "Citizen Alert Portal",
+    home_tagline: "Government of India Initiative for Public Safety & Civic Responsibility",
+
+    btn_report: "📢 Report an Issue",
+    btn_track: "📍 Track Complaint",
+
+    report_title: "Report an Issue",
+    track_title: "Track Your Complaint",
+    authority_title: "🛠️ Authority Login Panel",
+
+    label_type: "Issue Type",
+    label_desc: "Issue Description",
+    label_photo: "Upload Photo",
+    label_location: "Location",
+    label_name: "Your Name",
+    label_mobile: "Mobile Number",
+
+    btn_submit: "Submit Report",
+    btn_search: "Search",
+    btn_login: "Login",
+    btn_logout: "Logout",
+
+    footer_text: "© 2026 Government of India · Citizen Alert Portal",
+
+    placeholder_address: "Full Address",
+    placeholder_track: "Enter Reference ID",
+
+    // Added translations for notice, rules, quick, and issue types
+    notice_title: "📢 Public Notices",
+    notice_1: "Do not submit fake or misleading complaints.",
+    notice_2: "Emergency complaints will be prioritized.",
+    notice_3: "False reporting may lead to legal action.",
+
+    rules_title: "📜 Rules & Regulations",
+    rule_1: "Provide correct information while submitting complaints.",
+    rule_2: "Attach valid photo evidence if available.",
+    rule_3: "Use this portal only for public interest issues.",
+    rule_4: "Complaints are monitored by authorized departments.",
+
+    quick_title: "⚡ Quick Complaint Report",
+    quick_btn: "Continue to Full Form",
+
+    issue_select: "Select Issue Type",
+    issue_road: "Road",
+    issue_water: "Water",
+    issue_electricity: "Electricity",
+    issue_crime: "Crime"
+  }
+};
+
+let currentLang = "hi";
+
+function setLanguage(lang){
+  currentLang = lang;
+
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key = el.getAttribute("data-i18n");
+    if(translations[lang][key]){
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+    const key = el.getAttribute("data-i18n-placeholder");
+    if(translations[lang][key]){
+      el.placeholder = translations[lang][key];
+    }
+  });
+}
+
+function toggleLang(){
+  setLanguage(currentLang === "hi" ? "en" : "hi");
+}
+
+/* set default language */
+setLanguage("hi");
+
+</script>
+
+<script>
+function adminLogout(){
+  loggedDept = "";
+  document.getElementById("adminPass").value = "";
+  document.getElementById("adminDept").value = "";
+  document.getElementById("adminEmail").value = "";
+  document.getElementById("adminDashboard").style.display = "none";
+  document.getElementById("adminLogin").style.display = "block";
+  showSection('home');
+}
+</script>
+</script>
+
+</body>
+</html>
