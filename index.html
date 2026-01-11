@@ -17,10 +17,10 @@
 }
 *{box-sizing:border-box;font-family:Arial,sans-serif}
 :root{
-  --primary:#14532d;        /* Dark green (header/footer) */
-  --secondary:#166534;      /* Green accents */
-  --accent:#22c55e;         /* Bright civic green */
-  --bg:#f0fdf4;             /* Very light green background */
+  --primary:#0b3c5d;     /* Government deep blue */
+  --secondary:#1d4ed8;   /* Blue accent */
+  --accent:#f97316;      /* Saffron (CTA / highlights) */
+  --bg:#f8fafc;          /* Clean light background */
   --card:#ffffff;
 }
 
@@ -28,7 +28,7 @@ body{
   margin:0;
   background:var(--bg);
   font-family:system-ui,Segoe UI,Arial,sans-serif;
-  color:#052e16;
+  color:#111827;
 }
 header{
   background:var(--primary);
@@ -47,8 +47,8 @@ nav button{
   padding:10px 18px;
   border:none;
   cursor:pointer;
-  background:#dcfce7;
-  color:#052e16;
+  background:#e0e7ff;
+  color:#0b3c5d;
   border-radius:8px;
   font-weight:700;
 }
@@ -83,7 +83,7 @@ nav button:hover{
 .primary{
   padding:12px 28px;
   background:var(--accent);
-  color:#052e16;
+  color:#ffffff;
   border:none;
   border-radius:8px;
   font-weight:800;
@@ -101,8 +101,8 @@ input,textarea,select{
   border-radius:8px;
   border:2px solid #86efac;
   font-size:14px;
-  background:#f0fdf4;
-  color:#052e16;
+  background:#ffffff;
+  color:#111827;
 }
 footer{
   background:var(--primary);
@@ -198,7 +198,7 @@ input:focus,textarea:focus,select:focus{
   border-radius:12px;
   padding:24px;
   margin-top:26px;
-  border:2px solid #bbf7d0;
+  border:1px solid #c7d2fe;
 }
 </style>
 <style>
@@ -873,15 +873,32 @@ function saveReport(imageData){
 }
 
 function trackReport(){
-  let id=document.getElementById("trackId").value;
-  let data=localStorage.getItem(id);
+  let id = document.getElementById("trackId").value;
+  let data = localStorage.getItem(id);
   if(!data){
-    document.getElementById("trackResult").innerHTML="❌ रिपोर्ट नहीं मिली";
+    document.getElementById("trackResult").innerHTML = "❌ रिपोर्ट नहीं मिली";
     return;
   }
-  let report=JSON.parse(data);
-  document.getElementById("trackResult").innerHTML=
-    "📌 Status: "+report.status+"<br>🕒 Time: "+report.time;
+  let report = JSON.parse(data);
+  document.getElementById("trackResult").innerHTML = `
+    <div class="status-wrapper">
+      <p><b>📌 Current Status:</b> ${report.status}</p>
+
+      <div class="status-steps">
+        <div class="status-step ${report.status === "Submitted" ? "active" : ""}">1</div>
+        <div class="status-step ${report.status === "In Progress" || report.status === "Resolved" ? "active" : ""}">2</div>
+        <div class="status-step ${report.status === "Resolved" ? "active" : ""}">3</div>
+      </div>
+
+      <div class="status-labels">
+        <span>Submitted</span>
+        <span>In Progress</span>
+        <span>Resolved</span>
+      </div>
+
+      <p style="margin-top:12px">🕒 <b>Reported At:</b> ${report.time}</p>
+    </div>
+  `;
 }
 
 const ADMIN_PASSWORD = "admin123";
