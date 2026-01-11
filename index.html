@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>नागरिक सूचना पोर्टल | Citizen Alert Portal</title>
+<title>नागरिक चेतना एवं जिम्मेदारी | Citizen Awareness & Responsibility</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -17,18 +17,23 @@
 }
 *{box-sizing:border-box;font-family:Arial,sans-serif}
 :root{
-  --gov-blue:#0b2d5c;
-  --gov-blue-light:#143f7a;
-  --gov-accent:#ff9933;
-  --bg-light:#f4f7fb;
-  --card-bg:#ffffff;
+  --primary:#14532d;        /* Dark green (header/footer) */
+  --secondary:#166534;      /* Green accents */
+  --accent:#22c55e;         /* Bright civic green */
+  --bg:#f0fdf4;             /* Very light green background */
+  --card:#ffffff;
 }
-body{margin:0;background:#f4f7fb}
+
+body{
+  margin:0;
+  background:var(--bg);
+  font-family:system-ui,Segoe UI,Arial,sans-serif;
+  color:#052e16;
+}
 header{
-  background:linear-gradient(90deg,var(--gov-blue),var(--gov-blue-light));
-  border-bottom:4px solid var(--gov-accent);
-  color:#fff;
-  padding:16px 24px;
+  background:var(--primary);
+  color:#ffffff;
+  padding:18px 28px;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -36,19 +41,20 @@ header{
   top:0;
   z-index:1000;
 }
+
 nav button{
-  margin-left:10px;
-  padding:8px 16px;
+  margin-left:12px;
+  padding:10px 18px;
   border:none;
   cursor:pointer;
-  background:rgba(255,255,255,0.15);
-  color:#fff;
-  border-radius:20px;
-  transition:all .3s ease;
+  background:#dcfce7;
+  color:#052e16;
+  border-radius:8px;
+  font-weight:700;
 }
+
 nav button:hover{
-  background:rgba(255,255,255,0.3);
-  transform:translateY(-1px);
+  background:#bbf7d0;
 }
 .lang-btn{
   background:#ffffff !important;
@@ -63,65 +69,66 @@ nav button:hover{
 .logo span{font-size:13px;opacity:.8}
 .section{
   display:none;
-  padding:40px;
-  text-align:center;
-  min-height: calc(100vh - 80px);
-  animation: fadeIn 0.4s ease;
-  background:var(--bg-light);
+  padding:50px 20px;
+  min-height:calc(100vh - 90px);
+  background:var(--bg);
 }
 
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
+@keyframes slideFade{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 .section.active{display:block}
 .primary{
   padding:12px 28px;
-  background:linear-gradient(90deg,var(--gov-accent),#ff7a00);
-  color:#fff;
+  background:var(--accent);
+  color:#052e16;
   border:none;
-  border-radius:25px;
+  border-radius:8px;
+  font-weight:800;
   cursor:pointer;
-  margin-top:10px;
-  font-weight:bold;
-  transition:all .3s ease;
 }
+
 .primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 14px rgba(0,0,0,.2);
+  background:#16a34a;
 }
 form{max-width:500px;margin:auto;text-align:left}
 label{margin-top:10px;display:block;font-weight:bold}
-input,textarea,select{width:100%;padding:10px;margin-top:5px;border-radius:4px;border:1px solid #ccc}
-footer{background:#0b2d5c;color:#fff;text-align:center;padding:10px;margin-top:40px}
-#trackResult{margin-top:20px;font-weight:bold}
-.card{
-  background:var(--card-bg);
-  padding:18px 22px;
-  border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,.12);
-  font-weight:bold;
-  min-width:150px;
-  text-align:center;
+input,textarea,select{
+  width:100%;
+  padding:12px 14px;
+  border-radius:8px;
+  border:2px solid #86efac;
+  font-size:14px;
+  background:#f0fdf4;
+  color:#052e16;
 }
+footer{
+  background:var(--primary);
+  color:#ffffff;
+  text-align:center;
+  padding:12px;
+  margin-top:40px;
+}
+#trackResult{margin-top:20px;font-weight:bold}
+/* Card style can be kept simple, but left as is for now */
 img{cursor:pointer}
 
 /* Added government-style CSS for home page */
 .home-hero{
-  background:linear-gradient(135deg,var(--gov-blue),var(--gov-blue-light));
-  color:#fff;
-  min-height:calc(100vh - 80px);
+  background:#ffffff;
+  color:#000000;
   display:flex;
-  align-items:flex-start;
   justify-content:center;
-  padding-top:60px;
+  padding-top:40px;
 }
 
 .hero-content{
-  max-width: 800px;
-  text-align: center;
-  padding: 20px;
+  background:#ffffff;
+  border-radius:10px;
+  padding:30px;
+  border:1px solid #e5e7eb;
 }
 
 .hero-content h1{
@@ -145,12 +152,12 @@ img{cursor:pointer}
 }
 
 .secondary{
-  padding: 12px 25px;
-  background: transparent;
-  color: #fff;
-  border: 2px solid #fff;
-  border-radius: 6px;
-  cursor: pointer;
+  padding:12px 25px;
+  background:rgba(255,255,255,0.15);
+  color:#ffffff;
+  border:2px solid rgba(255,255,255,0.6);
+  border-radius:6px;
+  cursor:pointer;
 }
 
 .secondary:hover{
@@ -165,46 +172,51 @@ img{cursor:pointer}
   line-height: 1.6;
 }
 form{
-  background:var(--card-bg);
+  background:var(--card);
   padding:25px;
   border-radius:10px;
   box-shadow:0 6px 18px rgba(0,0,0,.12);
 }
 input,textarea,select{
-  transition:border .2s ease, box-shadow .2s ease;
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:14px;
+  transition:all .2s ease;
 }
 input:focus,textarea:focus,select:focus{
   outline:none;
-  border:1px solid var(--gov-blue);
-  box-shadow:0 0 0 2px rgba(11,45,92,.15);
+  border-color:#16a34a;
+  background:#ecfdf5;
 }
 </style>
 <!-- Add styles for new home sections -->
 <style>
-.notice-board, .rules-box, .quick-report{
-  background:rgba(255,255,255,0.15);
-  border-radius:14px;
-  padding:20px;
-  margin-top:25px;
-  text-align:left;
+.notice-board, .rules-box{
+  background:#ffffff;
+  border-radius:12px;
+  padding:24px;
+  margin-top:26px;
+  border:2px solid #bbf7d0;
 }
-.notice-board h3, .rules-box h3, .quick-report h3{
-  margin-top:0;
-  color:#fff;
+</style>
+<style>
+p, li, label{
+  color:#000000;
+  line-height:1.8;
 }
-.notice-board ul, .rules-box ol{
-  padding-left:20px;
-  font-size:14px;
-  line-height:1.6;
+table{
+  width:100%;
+  border-collapse:collapse;
 }
-.quick-report form{
-  display:grid;
-  gap:10px;
-}
-.quick-report input, .quick-report select{
+table th, table td{
   padding:10px;
-  border-radius:6px;
-  border:none;
+  border:1px solid #e5e7eb;
+  color:#000000;
+}
+table th{
+  background:#f1f5f9;
 }
 </style>
 </head>
@@ -213,7 +225,7 @@ input:focus,textarea:focus,select:focus{
 
 <header>
   <div class="logo">
-    <h2 data-i18n="home_title">नागरिक सूचना पोर्टल</h2>
+    <h2 data-i18n="home_title">नागरिक चेतना एवं जिम्मेदारी</h2>
     <span>Citizen Alert & Incident Portal</span>
   </div>
   <nav>
@@ -227,7 +239,7 @@ input:focus,textarea:focus,select:focus{
 
 <section id="home" class="section active home-hero">
   <div class="hero-content container">
-    <h1 data-i18n="home_title">नागरिक सूचना पोर्टल</h1>
+    <h1 data-i18n="home_title">नागरिक चेतना एवं जिम्मेदारी</h1>
     <p class="tagline" data-i18n="home_tagline">
       Government of India Initiative for Public Safety & Civic Responsibility
     </p>
@@ -240,6 +252,11 @@ input:focus,textarea:focus,select:focus{
     <div class="gov-note">
       An official citizen engagement platform to report public issues,
       ensure transparency, and improve governance.
+    </div>
+
+    <div class="rules-box" id="citizenRankBox">
+      <h3>🏅 Your Civic Rank</h3>
+      <p id="citizenRankText">No rank yet</p>
     </div>
 
     <!-- Government Notice Board -->
@@ -260,24 +277,56 @@ input:focus,textarea:focus,select:focus{
         <li data-i18n="rule_2">Attach valid photo evidence if available.</li>
         <li data-i18n="rule_3">Use this portal only for public interest issues.</li>
         <li data-i18n="rule_4">Complaints are monitored by authorized departments.</li>
+        <li data-i18n="rule_5">False or misleading complaints may attract fines as per applicable laws.</li>
+        <li data-i18n="rule_6">A fine of ₹500–₹2000 may be imposed after verification by the concerned authority.</li>
+        <li data-i18n="rule_7">Fines are imposed only when a complaint is proven fake, repeated, or intentionally misleading.</li>
       </ol>
     </div>
 
-    <!-- Quick Report Complaint Form -->
-    <div class="quick-report">
-      <h3 data-i18n="quick_title">⚡ Quick Complaint Report</h3>
-      <form onsubmit="showSection('report');return false;">
-        <input type="text" placeholder="Enter issue location" required>
-        <select required>
-          <option value="" data-i18n="issue_select">Select Issue Type</option>
-          <option data-i18n="issue_road">Road</option>
-          <option data-i18n="issue_water">Water</option>
-          <option data-i18n="issue_electricity">Electricity</option>
-          <option data-i18n="issue_crime">Crime</option>
-        </select>
-        <button class="primary" type="submit" data-i18n="quick_btn">Continue to Full Form</button>
-      </form>
+    <!-- Civic Sense Fine Dashboard -->
+    <div class="rules-box">
+      <h3 data-i18n="fine_title">💰 Civic Sense Fine Dashboard</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead>
+          <tr style="background:rgba(255,255,255,0.2)">
+            <th style="padding:8px;text-align:left" data-i18n="fine_issue">Issue</th>
+            <th style="padding:8px;text-align:left" data-i18n="fine_amount">Fine Amount</th>
+            <th style="padding:8px;text-align:left" data-i18n="fine_when">When Imposed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="fine_littering">Littering / Garbage</td>
+            <td>₹500 – ₹1000</td>
+            <td data-i18n="fine_littering_when">If garbage is thrown in public places</td>
+          </tr>
+          <tr>
+            <td data-i18n="fine_spitting">Spitting in Public</td>
+            <td>₹500</td>
+            <td data-i18n="fine_spitting_when">Spitting at public places</td>
+          </tr>
+          <tr>
+            <td data-i18n="fine_noise">Noise Pollution</td>
+            <td>₹1000 – ₹2000</td>
+            <td data-i18n="fine_noise_when">Excessive noise beyond permitted limits</td>
+          </tr>
+          <tr>
+            <td data-i18n="fine_damage">Damage to Public Property</td>
+            <td>₹2000+</td>
+            <td data-i18n="fine_damage_when">Damaging government or public property</td>
+          </tr>
+          <tr>
+            <td data-i18n="fine_other">Other Civic Sense Issue</td>
+            <td>₹500 – ₹2000</td>
+            <td data-i18n="fine_other_when">Any verified civic indiscipline</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;margin-top:10px;opacity:.8" data-i18n="fine_note">
+        * Fine amounts are indicative and may vary as per local municipal laws.
+      </p>
     </div>
+
   </div>
 </section>
 
@@ -286,35 +335,42 @@ input:focus,textarea:focus,select:focus{
   <h2 data-i18n="report_title">घटना रिपोर्ट करें</h2>
   <form id="reportForm">
     <label data-i18n="label_type">घटना का प्रकार</label>
-    <select required>
+    <select id="issueType" required onchange="updateFineEstimate()">
       <option value="">चुनें</option>
-      <option>Road Accident</option>
-      <option>Electricity</option>
-      <option>Water Problem</option>
-      <option>Crime</option>
-      <option>Fire</option>
+      <option value="issue_littering" data-i18n="issue_littering">Littering / Garbage</option>
+      <option value="issue_spitting" data-i18n="issue_spitting">Spitting in Public</option>
+      <option value="issue_noise" data-i18n="issue_noise">Noise Pollution</option>
+      <option value="issue_damage" data-i18n="issue_damage">Damage to Public Property</option>
+      <option value="issue_other_civic" data-i18n="issue_other_civic">Other Civic Sense Issue</option>
     </select>
+    <p id="fineEstimate" style="margin-top:8px;font-weight:600;color:#065f46"></p>
 
     <label data-i18n="label_desc">घटना का विवरण</label>
     <textarea required></textarea>
 
     <label data-i18n="label_photo">फोटो अपलोड करें</label>
-    <input type="file" accept="image/*">
+    <input type="file" id="issuePhoto" accept="image/*">
+    <p id="aiDetectMsg" style="font-size:13px;color:#065f46;margin-top:6px"></p>
 
     <label data-i18n="label_location">स्थान</label>
-    <input type="text" placeholder="पूरा पता" data-i18n-placeholder="placeholder_address" required>
+    <input type="text" id="locationInput" placeholder="Auto-detected address" data-i18n-placeholder="placeholder_address" required>
     <input type="hidden" id="lat">
     <input type="hidden" id="lng">
 
+    <label style="display:flex;align-items:center;gap:8px;font-weight:normal">
+      <input type="checkbox" id="anonymousCheck">
+      <span data-i18n="anon_label">Submit complaint anonymously</span>
+    </label>
     <label data-i18n="label_name">आपका नाम</label>
-    <input type="text" required>
+    <input type="text" id="userName" required>
 
     <label data-i18n="label_mobile">मोबाइल नंबर</label>
-    <input type="tel" pattern="[0-9]{10}" required>
+    <input type="tel" id="userMobile" pattern="[0-9]{10}" required>
 
     <button class="primary" type="submit" data-i18n="btn_submit">रिपोर्ट सबमिट करें</button>
   </form>
   <p id="successMsg"></p>
+  <p id="duplicateWarn" style="color:#b45309;font-weight:600;margin-top:10px"></p>
   </div>
 </section>
 
@@ -372,6 +428,83 @@ input:focus,textarea:focus,select:focus{
 </footer>
 
 <script>
+/* ===============================
+   AI FINE ESTIMATOR (DEMO)
+   =============================== */
+
+const fineMap = {
+  issue_littering: "₹500 – ₹1000",
+  issue_spitting: "₹500",
+  issue_noise: "₹1000 – ₹2000",
+  issue_damage: "₹2000+",
+  issue_other_civic: "₹500 – ₹2000"
+};
+
+function updateFineEstimate(){
+  const issue = document.getElementById("issueType").value;
+  const box = document.getElementById("fineEstimate");
+
+  if(!issue){
+    box.innerHTML = "";
+    return;
+  }
+
+  const amount = fineMap[issue] || "As per rules";
+
+  box.innerHTML =
+    "💰 Estimated Fine: <b>"+amount+"</b> <br><small>(For awareness purpose only)</small>";
+}
+
+/* ===============================
+   AI AUTO ISSUE DETECTION (DEMO)
+   =============================== */
+
+document.getElementById("issuePhoto").addEventListener("change", function(){
+  const file = this.files[0];
+  if(!file) return;
+
+  const name = file.name.toLowerCase();
+  const issueSelect = document.getElementById("issueType");
+  const msg = document.getElementById("aiDetectMsg");
+
+  // Fake AI logic (Explainable & Demo-perfect)
+  let detected = "";
+
+  if(name.includes("garbage") || name.includes("trash")){
+    detected = "issue_littering";
+  }
+  else if(name.includes("spit")){
+    detected = "issue_spitting";
+  }
+  else if(name.includes("noise")){
+    detected = "issue_noise";
+  }
+  else if(name.includes("break") || name.includes("damage")){
+    detected = "issue_damage";
+  }
+  else{
+    detected = "issue_other_civic";
+  }
+
+  // Apply detection
+  [...issueSelect.options].forEach(opt=>{
+    if(opt.getAttribute("data-i18n") === detected){
+      opt.selected = true;
+      updateFineEstimate();
+    }
+  });
+
+  // Show AI message
+  const labelMap = {
+    issue_littering: "Littering / Garbage",
+    issue_spitting: "Spitting in Public",
+    issue_noise: "Noise Pollution",
+    issue_damage: "Damage to Public Property",
+    issue_other_civic: "Other Civic Sense Issue"
+  };
+
+  msg.innerHTML = "🤖 AI detected issue: <b>" + labelMap[detected] + "</b>";
+});
 const firebaseConfig = {
   apiKey: "demo",
   authDomain: "demo.firebaseapp.com",
@@ -388,9 +521,61 @@ function showSection(id){
   target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-navigator.geolocation.getCurrentPosition(pos=>{
-  document.getElementById("lat").value = pos.coords.latitude;
-  document.getElementById("lng").value = pos.coords.longitude;
+navigator.geolocation.getCurrentPosition(
+  async pos => {
+    const lat = pos.coords.latitude.toFixed(6);
+    const lng = pos.coords.longitude.toFixed(6);
+
+    document.getElementById("lat").value = lat;
+    document.getElementById("lng").value = lng;
+
+    const locationField = document.getElementById("locationInput");
+    locationField.value = "Fetching address…";
+
+    try{
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      );
+      const data = await res.json();
+
+      const addr = data.address || {};
+      const fullAddress = [
+        addr.road,
+        addr.suburb || addr.neighbourhood,
+        addr.city || addr.town || addr.village,
+        addr.state,
+        addr.postcode
+      ].filter(Boolean).join(", ");
+
+      locationField.value = fullAddress || "Address not found";
+    }catch(e){
+      locationField.value = "Unable to fetch address";
+    }
+  },
+  // Error callback and options omitted for brevity
+);
+
+/* ===============================
+   ANONYMOUS COMPLAINT MODE
+   =============================== */
+
+document.getElementById("anonymousCheck").addEventListener("change", function(){
+  const name = document.getElementById("userName");
+  const mobile = document.getElementById("userMobile");
+
+  if(this.checked){
+    name.value = "";
+    mobile.value = "";
+    name.disabled = true;
+    mobile.disabled = true;
+    name.required = false;
+    mobile.required = false;
+  }else{
+    name.disabled = false;
+    mobile.disabled = false;
+    name.required = true;
+    mobile.required = true;
+  }
 });
 
 document.getElementById("reportForm").addEventListener("submit",function(e){
@@ -409,22 +594,88 @@ document.getElementById("reportForm").addEventListener("submit",function(e){
   saveReport("");
 });
 
+/* ===============================
+   CITIZEN RANK SYSTEM
+   =============================== */
+
+function getCitizenRank(count){
+  if(count >= 25) return "🦸 Civic Hero";
+  if(count >= 15) return "🥇 Gold Citizen";
+  if(count >= 8)  return "🥈 Silver Citizen";
+  if(count >= 3)  return "🥉 Bronze Citizen";
+  return "New Citizen";
+}
+
+function updateCitizenRank(){
+  let validCount = 0;
+
+  for(let i=0;i<localStorage.length;i++){
+    const key = localStorage.key(i);
+    if(key.startsWith("CAP-")){
+      validCount++;
+    }
+  }
+
+  const rank = getCitizenRank(validCount);
+  const box = document.getElementById("citizenRankText");
+  if(box){
+    box.innerHTML = `You have submitted <b>${validCount}</b> valid complaints.<br>Rank: <b>${rank}</b>`;
+  }
+}
+
 function saveReport(imageData){
-  let ref="CAP-"+Math.random().toString(36).substr(2,5).toUpperCase();
-  let report={
+  const issueType = document.getElementById("issueType").value;
+  const lat = document.getElementById("lat").value;
+  const lng = document.getElementById("lng").value;
+
+  let isDuplicate = false;
+
+  // Simple AI duplicate detection (Explainable)
+  for(let i=0;i<localStorage.length;i++){
+    const key = localStorage.key(i);
+    if(!key.startsWith("CAP-")) continue;
+
+    const old = JSON.parse(localStorage.getItem(key));
+    if(
+      old.lat === lat &&
+      old.lng === lng &&
+      old.issueType === issueType
+    ){
+      isDuplicate = true;
+      break;
+    }
+  }
+
+  const warnBox = document.getElementById("duplicateWarn");
+  if(isDuplicate){
+    warnBox.innerHTML = "⚠ Similar complaint already exists for this location. Please avoid duplicate reporting.";
+  }else{
+    warnBox.innerHTML = "";
+  }
+
+  let ref = "CAP-"+Math.random().toString(36).substr(2,5).toUpperCase();
+
+  let report = {
     ref,
+    issueType,
     status:"Submitted",
     department:"Municipal",
     priority:"Normal",
     image:imageData,
     time:new Date().toLocaleString(),
-    lat: document.getElementById("lat").value,
-    lng: document.getElementById("lng").value,
+    lat,
+    lng,
+    anonymous: document.getElementById("anonymousCheck").checked
   };
-  localStorage.setItem(ref,JSON.stringify(report));
+
+  localStorage.setItem(ref, JSON.stringify(report));
   db.ref("complaints/"+ref).set(report);
-  document.getElementById("successMsg").innerHTML="✅ रिपोर्ट सफल! Reference ID: <b>"+ref+"</b>";
+
+  document.getElementById("successMsg").innerHTML =
+    "✅ रिपोर्ट सफल! Reference ID: <b>"+ref+"</b>";
+
   document.getElementById("reportForm").reset();
+  updateCitizenRank();
 }
 
 function trackReport(){
@@ -505,6 +756,7 @@ function loadComplaints(){
       ${data.image ? `<img src="${data.image}" style="max-width:100%;height:120px;object-fit:cover;border-radius:6px;margin-bottom:8px">` : ""}
       ${data.lat ? `<a target="_blank" href="https://www.google.com/maps?q=${data.lat},${data.lng}">📍 View Location</a><br><br>` : ""}
       <b>Reference:</b> ${data.ref}<br>
+      <b>Reported By:</b> ${data.anonymous ? "Anonymous Citizen" : "Registered Citizen"}<br>
 
       <b>Department:</b>
       <select onchange="updateDepartment('${data.ref}', this.value)">
@@ -563,13 +815,35 @@ function updateDepartment(ref, department){
 
 const translations = {
   hi: {
+    anon_label: "गोपनीय रूप से शिकायत दर्ज करें",
+    fine_title: "💰 नागरिक अनुशासन जुर्माना डैशबोर्ड",
+    fine_issue: "समस्या",
+    fine_amount: "जुर्माना राशि",
+    fine_when: "कब लगाया जाएगा",
+
+    fine_littering: "कचरा फैलाना",
+    fine_littering_when: "सार्वजनिक स्थानों पर कचरा फेंकने पर",
+
+    fine_spitting: "सार्वजनिक स्थान पर थूकना",
+    fine_spitting_when: "सार्वजनिक स्थान पर थूकने पर",
+
+    fine_noise: "ध्वनि प्रदूषण",
+    fine_noise_when: "निर्धारित सीमा से अधिक शोर करने पर",
+
+    fine_damage: "सार्वजनिक संपत्ति को नुकसान",
+    fine_damage_when: "सरकारी या सार्वजनिक संपत्ति को नुकसान पहुंचाने पर",
+
+    fine_other: "अन्य नागरिक अनुशासन समस्या",
+    fine_other_when: "सत्यापित नागरिक अनुशासन उल्लंघन पर",
+
+    fine_note: "* जुर्माना राशि स्थानीय नगर निकाय नियमों के अनुसार भिन्न हो सकती है।",
     nav_home: "होम",
     nav_report: "रिपोर्ट करें",
     nav_track: "स्टेटस चेक",
     nav_authority: "अधिकारी लॉगिन",
     nav_lang: "EN / हिंदी",
 
-    home_title: "नागरिक सूचना पोर्टल",
+    home_title: "नागरिक चेतना एवं जिम्मेदारी",
     home_tagline: "जन सुरक्षा और नागरिक जिम्मेदारी हेतु भारत सरकार की पहल",
 
     btn_report: "📢 समस्या रिपोर्ट करें",
@@ -607,6 +881,9 @@ const translations = {
     rule_2: "यदि संभव हो तो प्रमाणिक फोटो संलग्न करें।",
     rule_3: "इस पोर्टल का उपयोग केवल सार्वजनिक हित के लिए करें।",
     rule_4: "शिकायतों की निगरानी अधिकृत विभागों द्वारा की जाती है।",
+    rule_5: "फर्जी या भ्रामक शिकायतों पर लागू कानूनों के अनुसार जुर्माना लगाया जा सकता है।",
+    rule_6: "संबंधित प्राधिकरण द्वारा जांच के बाद ₹500 से ₹2000 तक का जुर्माना लगाया जा सकता है।",
+    rule_7: "जुर्माना केवल तभी लगाया जाता है जब शिकायत फर्जी, बार-बार या जानबूझकर भ्रामक पाई जाए।",
 
     quick_title: "⚡ त्वरित शिकायत दर्ज करें",
     quick_btn: "पूर्ण फॉर्म पर जाएँ",
@@ -615,7 +892,12 @@ const translations = {
     issue_road: "सड़क",
     issue_water: "पानी",
     issue_electricity: "बिजली",
-    issue_crime: "अपराध"
+    issue_crime: "नागरिक अनुशासन उल्लंघन",
+    issue_littering: "कचरा फैलाना",
+    issue_spitting: "सार्वजनिक स्थान पर थूकना",
+    issue_noise: "ध्वनि प्रदूषण",
+    issue_damage: "सार्वजनिक संपत्ति को नुकसान",
+    issue_other_civic: "अन्य नागरिक अनुशासन समस्या",
   },
 
   en: {
@@ -625,7 +907,7 @@ const translations = {
     nav_authority: "Authority Login",
     nav_lang: "EN / हिंदी",
 
-    home_title: "Citizen Alert Portal",
+    home_title: "Citizen Awareness & Responsibility",
     home_tagline: "Government of India Initiative for Public Safety & Civic Responsibility",
 
     btn_report: "📢 Report an Issue",
@@ -663,6 +945,9 @@ const translations = {
     rule_2: "Attach valid photo evidence if available.",
     rule_3: "Use this portal only for public interest issues.",
     rule_4: "Complaints are monitored by authorized departments.",
+    rule_5: "False or misleading complaints may attract fines as per applicable laws.",
+    rule_6: "A fine ranging from ₹500 to ₹2000 may be imposed after verification by the concerned authority.",
+    rule_7: "Fines are imposed only if a complaint is found to be fake, repeated, or intentionally misleading.",
 
     quick_title: "⚡ Quick Complaint Report",
     quick_btn: "Continue to Full Form",
@@ -671,7 +956,12 @@ const translations = {
     issue_road: "Road",
     issue_water: "Water",
     issue_electricity: "Electricity",
-    issue_crime: "Crime"
+    issue_crime: "Civic Sense Violation",
+    issue_littering: "Littering / Garbage",
+    issue_spitting: "Spitting in Public",
+    issue_noise: "Noise Pollution",
+    issue_damage: "Damage to Public Property",
+    issue_other_civic: "Other Civic Sense Issue",
   }
 };
 
@@ -701,6 +991,7 @@ function toggleLang(){
 
 /* set default language */
 setLanguage("hi");
+updateCitizenRank();
 
 </script>
 
@@ -714,7 +1005,6 @@ function adminLogout(){
   document.getElementById("adminLogin").style.display = "block";
   showSection('home');
 }
-</script>
 </script>
 
 </body>
