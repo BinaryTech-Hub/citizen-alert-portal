@@ -219,6 +219,99 @@ table th{
   background:#f1f5f9;
 }
 </style>
+<!-- ===============================
+     RESPONSIVE DESIGN (MOBILE + DESKTOP)
+     =============================== -->
+<style>
+@media (max-width: 1024px){
+  .container{
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 768px){
+  /* Header */
+  header{
+    flex-direction: column;
+    text-align: center;
+    gap: 6px;
+  }
+
+  /* Navbar */
+  nav{
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  nav button{
+    flex: 1 1 45%;
+    margin: 0;
+  }
+
+  /* Hero */
+  .hero-content h1{
+    font-size: 28px;
+  }
+
+  .hero-actions{
+    flex-direction: column;
+  }
+
+  /* Main grid → stack */
+  #mainContent .container{
+    grid-template-columns: 1fr !important;
+  }
+
+  aside{
+    order: 2;
+  }
+
+  /* Forms */
+  form{
+    width: 100%;
+    margin: 0;
+  }
+
+  input, textarea, select, button{
+    font-size: 16px;
+  }
+
+  /* Tables */
+  table{
+    font-size: 13px;
+  }
+
+  table th, table td{
+    padding: 6px;
+  }
+
+  /* Admin dashboard */
+  #analytics{
+    flex-direction: column;
+  }
+
+  /* Footer */
+  footer{
+    padding: 20px 10px;
+  }
+}
+
+@media (max-width: 480px){
+  /* Navbar buttons full width */
+  nav button{
+    flex: 1 1 100%;
+  }
+
+  /* Hero spacing */
+  .hero-content{
+    padding: 20px;
+  }
+
+  .tagline{
+    font-size: 14px;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -228,14 +321,15 @@ table th{
     <h2 data-i18n="home_title">नागरिक चेतना एवं जिम्मेदारी</h2>
     <span>Citizen Alert & Incident Portal</span>
   </div>
-  <nav>
-    <button onclick="showSection('home')" data-i18n="nav_home">Home</button>
-    <button onclick="showSection('report')" data-i18n="nav_report">रिपोर्ट करें</button>
-    <button onclick="showSection('track')" data-i18n="nav_track">स्टेटस चेक</button>
-    <button onclick="showSection('admin')" data-i18n="nav_authority">Authority Login</button>
-    <button onclick="toggleLang()" class="lang-btn" data-i18n="nav_lang">EN / हिंदी</button>
-  </nav>
 </header>
+
+<nav style="background:#dcfce7;padding:10px 20px;display:flex;justify-content:center;gap:15px;flex-wrap:wrap">
+  <button onclick="showSection('home')" data-i18n="nav_home">Home</button>
+  <button onclick="showSection('report')" data-i18n="nav_report">रिपोर्ट करें</button>
+  <button onclick="showSection('track')" data-i18n="nav_track">स्टेटस चेक</button>
+  <button onclick="showSection('admin')" data-i18n="nav_authority">Authority Login</button>
+  <button onclick="toggleLang()" class="lang-btn" data-i18n="nav_lang">EN / हिंदी</button>
+</nav>
 
 <section id="home" class="section active home-hero">
   <div class="hero-content container">
@@ -243,90 +337,137 @@ table th{
     <p class="tagline" data-i18n="home_tagline">
       Government of India Initiative for Public Safety & Civic Responsibility
     </p>
-
     <div class="hero-actions">
       <button class="primary" onclick="showSection('report')" data-i18n="btn_report">📢 Report an Issue</button>
       <button class="secondary" onclick="showSection('track')" data-i18n="btn_track">📍 Track Complaint</button>
     </div>
-
     <div class="gov-note">
       An official citizen engagement platform to report public issues,
       ensure transparency, and improve governance.
     </div>
+  </div>
+</section>
 
-    <div class="rules-box" id="citizenRankBox">
-      <h3>🏅 Your Civic Rank</h3>
-      <p id="citizenRankText">No rank yet</p>
+<section id="mainContent" class="section active">
+  <div class="container" style="display:grid;grid-template-columns:3fr 1fr;gap:30px">
+    <div>
+      <div class="rules-box" id="citizenRankBox">
+        <h3>🏅 Your Civic Rank</h3>
+        <p id="citizenRankText">No rank yet</p>
+      </div>
+      <!-- Government Notice Board -->
+      <div class="notice-board">
+        <h3 data-i18n="notice_title">📢 Public Notices</h3>
+        <ul>
+          <li data-i18n="notice_1">Do not submit fake or misleading complaints.</li>
+          <li data-i18n="notice_2">Emergency complaints will be prioritized.</li>
+          <li data-i18n="notice_3">False reporting may lead to legal action.</li>
+        </ul>
+      </div>
+      <!-- Rules & Regulations Section -->
+      <div class="rules-box">
+        <h3 data-i18n="rules_title">📜 Rules & Regulations</h3>
+        <ol>
+          <li data-i18n="rule_1">Provide correct information while submitting complaints.</li>
+          <li data-i18n="rule_2">Attach valid photo evidence if available.</li>
+          <li data-i18n="rule_3">Use this portal only for public interest issues.</li>
+          <li data-i18n="rule_4">Complaints are monitored by authorized departments.</li>
+          <li data-i18n="rule_5">False or misleading complaints may attract fines as per applicable laws.</li>
+          <li data-i18n="rule_6">A fine of ₹500–₹2000 may be imposed after verification by the concerned authority.</li>
+          <li data-i18n="rule_7">Fines are imposed only when a complaint is proven fake, repeated, or intentionally misleading.</li>
+        </ol>
+      </div>
+      <!-- Civic Sense Fine Dashboard -->
+      <div class="rules-box">
+        <h3 data-i18n="fine_title">💰 Civic Sense Fine Dashboard</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
+          <thead>
+            <tr style="background:rgba(255,255,255,0.2)">
+              <th style="padding:8px;text-align:left" data-i18n="fine_issue">Issue</th>
+              <th style="padding:8px;text-align:left" data-i18n="fine_amount">Fine Amount</th>
+              <th style="padding:8px;text-align:left" data-i18n="fine_when">When Imposed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-i18n="fine_littering">Littering / Garbage</td>
+              <td>₹500 – ₹1000</td>
+              <td data-i18n="fine_littering_when">If garbage is thrown in public places</td>
+            </tr>
+            <tr>
+              <td data-i18n="fine_spitting">Spitting in Public</td>
+              <td>₹500</td>
+              <td data-i18n="fine_spitting_when">Spitting at public places</td>
+            </tr>
+            <tr>
+              <td data-i18n="fine_noise">Noise Pollution</td>
+              <td>₹1000 – ₹2000</td>
+              <td data-i18n="fine_noise_when">Excessive noise beyond permitted limits</td>
+            </tr>
+            <tr>
+              <td data-i18n="fine_damage">Damage to Public Property</td>
+              <td>₹2000+</td>
+              <td data-i18n="fine_damage_when">Damaging government or public property</td>
+            </tr>
+            <tr>
+              <td data-i18n="fine_other">Other Civic Sense Issue</td>
+              <td>₹500 – ₹2000</td>
+              <td data-i18n="fine_other_when">Any verified civic indiscipline</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:12px;margin-top:10px;opacity:.8" data-i18n="fine_note">
+          * Fine amounts are indicative and may vary as per local municipal laws.
+        </p>
+      </div>
+      <!-- Emergency Contact Section -->
+      <div class="rules-box">
+        <h3>🚨 Emergency Contact</h3>
+        <ul>
+          <li><b>Police:</b> 112</li>
+          <li><b>Ambulance:</b> 108</li>
+          <li><b>Fire Brigade:</b> 101</li>
+          <li><b>Women Helpline:</b> 181</li>
+          <li><b>Municipal Control Room:</b> 155304</li>
+        </ul>
+      </div>
+      <!-- Authority Description -->
+      <div class="rules-box">
+        <h3>🏛️ About Authorities</h3>
+        <p>
+          Complaints submitted on this portal are monitored and handled by authorized
+          government departments such as Municipal Corporation, Police Department,
+          Public Works Department (PWD), Electricity Department, and Water Supply Department.
+        </p>
+        <p>
+          Each complaint is verified and processed as per applicable civic laws and
+          administrative guidelines to ensure transparency, accountability, and public safety.
+        </p>
+      </div>
+      <!-- Site Conclusion -->
+      <div class="rules-box">
+        <h3>✅ Site Conclusion</h3>
+        <p>
+          नागरिक चेतना एवं जिम्मेदारी is a citizen-centric digital platform designed to
+          promote civic responsibility, encourage public participation, and support
+          smart governance through technology.
+        </p>
+        <p>
+          By reporting civic issues responsibly, citizens contribute directly to cleaner,
+          safer, and more accountable cities.
+        </p>
+      </div>
     </div>
-
-    <!-- Government Notice Board -->
-    <div class="notice-board">
-      <h3 data-i18n="notice_title">📢 Public Notices</h3>
-      <ul>
-        <li data-i18n="notice_1">Do not submit fake or misleading complaints.</li>
-        <li data-i18n="notice_2">Emergency complaints will be prioritized.</li>
-        <li data-i18n="notice_3">False reporting may lead to legal action.</li>
-      </ul>
-    </div>
-
-    <!-- Rules & Regulations Section -->
-    <div class="rules-box">
-      <h3 data-i18n="rules_title">📜 Rules & Regulations</h3>
-      <ol>
-        <li data-i18n="rule_1">Provide correct information while submitting complaints.</li>
-        <li data-i18n="rule_2">Attach valid photo evidence if available.</li>
-        <li data-i18n="rule_3">Use this portal only for public interest issues.</li>
-        <li data-i18n="rule_4">Complaints are monitored by authorized departments.</li>
-        <li data-i18n="rule_5">False or misleading complaints may attract fines as per applicable laws.</li>
-        <li data-i18n="rule_6">A fine of ₹500–₹2000 may be imposed after verification by the concerned authority.</li>
-        <li data-i18n="rule_7">Fines are imposed only when a complaint is proven fake, repeated, or intentionally misleading.</li>
-      </ol>
-    </div>
-
-    <!-- Civic Sense Fine Dashboard -->
-    <div class="rules-box">
-      <h3 data-i18n="fine_title">💰 Civic Sense Fine Dashboard</h3>
-      <table style="width:100%;border-collapse:collapse;font-size:14px">
-        <thead>
-          <tr style="background:rgba(255,255,255,0.2)">
-            <th style="padding:8px;text-align:left" data-i18n="fine_issue">Issue</th>
-            <th style="padding:8px;text-align:left" data-i18n="fine_amount">Fine Amount</th>
-            <th style="padding:8px;text-align:left" data-i18n="fine_when">When Imposed</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-i18n="fine_littering">Littering / Garbage</td>
-            <td>₹500 – ₹1000</td>
-            <td data-i18n="fine_littering_when">If garbage is thrown in public places</td>
-          </tr>
-          <tr>
-            <td data-i18n="fine_spitting">Spitting in Public</td>
-            <td>₹500</td>
-            <td data-i18n="fine_spitting_when">Spitting at public places</td>
-          </tr>
-          <tr>
-            <td data-i18n="fine_noise">Noise Pollution</td>
-            <td>₹1000 – ₹2000</td>
-            <td data-i18n="fine_noise_when">Excessive noise beyond permitted limits</td>
-          </tr>
-          <tr>
-            <td data-i18n="fine_damage">Damage to Public Property</td>
-            <td>₹2000+</td>
-            <td data-i18n="fine_damage_when">Damaging government or public property</td>
-          </tr>
-          <tr>
-            <td data-i18n="fine_other">Other Civic Sense Issue</td>
-            <td>₹500 – ₹2000</td>
-            <td data-i18n="fine_other_when">Any verified civic indiscipline</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="font-size:12px;margin-top:10px;opacity:.8" data-i18n="fine_note">
-        * Fine amounts are indicative and may vary as per local municipal laws.
-      </p>
-    </div>
-
+    <aside>
+      <div class="rules-box">
+        <h3>ℹ️ Quick Info</h3>
+        <ul>
+          <li>Report civic issues responsibly</li>
+          <li>Use real photos only</li>
+          <li>Emergency cases get priority</li>
+        </ul>
+      </div>
+    </aside>
   </div>
 </section>
 
@@ -349,11 +490,19 @@ table th{
     <textarea required></textarea>
 
     <label data-i18n="label_photo">फोटो अपलोड करें</label>
-    <input type="file" id="issuePhoto" accept="image/*">
+    <input 
+      type="file" 
+      id="issuePhoto" 
+      accept="image/*"
+      capture="environment"
+    >
+    <small style="opacity:.75">
+      📷 On mobile devices, camera capture is enforced for authenticity
+    </small>
     <p id="aiDetectMsg" style="font-size:13px;color:#065f46;margin-top:6px"></p>
 
     <label data-i18n="label_location">स्थान</label>
-    <input type="text" id="locationInput" placeholder="Auto-detected address" data-i18n-placeholder="placeholder_address" required>
+<input type="text" id="locationInput" placeholder="Auto-detected address" data-i18n-placeholder="placeholder_address" required onclick="fetchCurrentLocation()">
     <input type="hidden" id="lat">
     <input type="hidden" id="lng">
 
@@ -423,6 +572,12 @@ table th{
   </div>
 </section>
 
+<section style="background:#16a34a;color:white;padding:50px 20px;text-align:center">
+  <h2>📢 Be a Responsible Citizen</h2>
+  <p>Report civic issues and help build a cleaner, safer nation.</p>
+  <button class="primary" onclick="showSection('report')">Report Now</button>
+</section>
+
 <footer>
   <p data-i18n="footer_text">© 2026 Citizen Alert Portal | Digital India</p>
 </footer>
@@ -459,9 +614,29 @@ function updateFineEstimate(){
    AI AUTO ISSUE DETECTION (DEMO)
    =============================== */
 
+// ==========================
+// MOBILE CAMERA ENFORCEMENT
+// ==========================
+function isMobileDevice(){
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
 document.getElementById("issuePhoto").addEventListener("change", function(){
   const file = this.files[0];
   if(!file) return;
+
+  // Enforce camera-only on mobile
+  if(isMobileDevice()){
+    if(!file.type.startsWith("image/")){
+      alert("Please capture photo using mobile camera only.");
+      this.value = "";
+      return;
+    }
+  }
+  // Optional: Warn on desktop
+  if(!isMobileDevice()){
+    console.warn("Camera enforcement active only on mobile devices");
+  }
 
   const name = file.name.toLowerCase();
   const issueSelect = document.getElementById("issueType");
@@ -519,41 +694,60 @@ function showSection(id){
   const target = document.getElementById(id);
   target.classList.add('active');
   target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  if(id === "report"){
+    fetchCurrentLocation();
+  }
 }
 
-navigator.geolocation.getCurrentPosition(
-  async pos => {
-    const lat = pos.coords.latitude.toFixed(6);
-    const lng = pos.coords.longitude.toFixed(6);
+async function fetchCurrentLocation(){
+  const locationField = document.getElementById("locationInput");
+  const latField = document.getElementById("lat");
+  const lngField = document.getElementById("lng");
 
-    document.getElementById("lat").value = lat;
-    document.getElementById("lng").value = lng;
+  locationField.value = "Fetching current location…";
+  latField.value = "";
+  lngField.value = "";
 
-    const locationField = document.getElementById("locationInput");
-    locationField.value = "Fetching address…";
+  if(!navigator.geolocation){
+    locationField.value = "Geolocation not supported";
+    return;
+  }
 
-    try{
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-      );
-      const data = await res.json();
+  navigator.geolocation.getCurrentPosition(
+    async pos => {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
 
-      const addr = data.address || {};
-      const fullAddress = [
-        addr.road,
-        addr.suburb || addr.neighbourhood,
-        addr.city || addr.town || addr.village,
-        addr.state,
-        addr.postcode
-      ].filter(Boolean).join(", ");
+      latField.value = lat;
+      lngField.value = lng;
 
-      locationField.value = fullAddress || "Address not found";
-    }catch(e){
-      locationField.value = "Unable to fetch address";
-    }
-  },
-  // Error callback and options omitted for brevity
-);
+      try{
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+        );
+        const data = await res.json();
+
+        const addr = data.address || {};
+        const fullAddress = [
+          addr.road,
+          addr.suburb || addr.neighbourhood,
+          addr.city || addr.town || addr.village,
+          addr.state,
+          addr.postcode
+        ].filter(Boolean).join(", ");
+
+        locationField.value = fullAddress || "Address not found";
+      }catch(e){
+        locationField.value = "Unable to fetch address";
+      }
+    },
+    () => {
+      locationField.value = "Location permission denied";
+    },
+    { enableHighAccuracy:true, maximumAge:0 }
+  );
+}
 
 /* ===============================
    ANONYMOUS COMPLAINT MODE
@@ -745,7 +939,7 @@ function loadComplaints(){
 
     const div = document.createElement("div");
     div.style.border = "1px solid #ccc";
-    div.style.padding = "10px";
+    div.style.padding = "14px";
     div.style.margin = "10px 0";
 
     if(data.priority==="High") div.style.borderLeft="6px solid orange";
